@@ -30,6 +30,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+THIRD_PARTY_APPS = []
+
 DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -118,4 +120,3 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 AUTH_USER_MODEL = "users.User"
-
