@@ -34,7 +34,6 @@ class RoomAdmin(admin.ModelAdmin):
 
     list_display = (
         "name",
-        "description",
         "country",
         "city",
         "price",
@@ -46,6 +45,7 @@ class RoomAdmin(admin.ModelAdmin):
         "check_in",
         "check_out",
         "instant_book",
+        "count_amenities",
     )
 
     list_filter = (
@@ -63,6 +63,9 @@ class RoomAdmin(admin.ModelAdmin):
 
     filter_horizontal = ("amenities", "facilities", "house_rules")
     # ManyToMany Field에 적용 가능.
+
+    def count_amenities(self, obj):  # list_display에 함수를 쓰고 싶을 때는 이름을 동일하게 써준다.
+        return obj.amenities.count()
 
 
 @admin.register(models.Photo)
