@@ -15,7 +15,26 @@ class RoomAdmin(admin.ModelAdmin):
 
     """ Room Admin Definition """
 
-    pass
+    list_display = (
+        "name",
+        "description",
+        "country",
+        "city",
+        "price",
+        "address",
+        "guests",
+        "beds",
+        "bedrooms",
+        "baths",
+        "check_in",
+        "check_out",
+        "instant_book",
+    )
+
+    list_filter = ("instant_book", "city", "country")
+
+    search_fields = ("=city", "^host__username")
+    # 도시 이름이 같거나, 호스트의 이름 첫 시작이 같으면 검색됨.
 
 
 @admin.register(models.Photo)
