@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import mark_safe
 from . import models
 
 # Register your models here.
@@ -79,6 +80,20 @@ class RoomAdmin(admin.ModelAdmin):
 @admin.register(models.Photo)
 class PhotoAdmin(admin.ModelAdmin):
 
-    """ """
+    """ Photo Admin Definition """
 
-    pass
+    list_display = ("__str__", "get_thumbnail")
+
+    def get_thumbnail(self, obj):
+        print(obj)  # Very Nice Place
+        print(type(obj))  # <class 'rooms.models.Photo'>
+        print(obj.file)  # 집2.jpg
+        print(type(obj.file))  # <class 'django.db.models.fields.files.ImageFieldFile'>
+
+        return mark_safe(f'<img width="50px" src="{obj.file.url}" />')
+        # 장고는 보안상 입력값으로부터 html이든 자바스크립트 코드든 아무거나 함부로 나타나지 않게 한다.
+        # 위의 이미지 태그도 mark_safe 없이 그냥 써버리면 저 html로 그대로 나오고 사진은 나오지 않는다.
+        # 이를 이미지 태그로 적용되어 사진으로 표현하기 위해서 mark_safe를 사용하는 것이다.
+        # mark_safe는 무분별한 입력값들을 분별하기 위해서 장고에 이 입력값은 괜찮다는 것을 알려주는 라이브러리다.
+
+    get_thumbnail.short_description = "Thumbnail"
