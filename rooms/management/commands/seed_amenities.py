@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = "This command creates amenities"
 
     def add_arguments(self, parser):
-        parser.add_argument("--number", help="How many users do you want to create")
+        parser.add_argument("--number", help="How many amenities do you want to create")
 
     def handle(self, *args, **options):
         amenities = [
