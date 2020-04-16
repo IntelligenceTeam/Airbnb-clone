@@ -89,6 +89,8 @@ class RoomAdmin(admin.ModelAdmin):
     def count_amenities(self, obj):  # list_display에 함수를 쓰고 싶을 때는 이름을 동일하게 써준다.
         return obj.amenities.count()
 
+    count_amenities.short_description = "Amenity Count"
+
     def count_photos(self, obj):
         return obj.photos.count()
 
