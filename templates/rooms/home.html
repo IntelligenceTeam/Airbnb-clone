@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
-{% comment %} 
-    위의 extends를 반드시 써야 기본 뼈대에 해당되는 html틀을 여기에 굳이 쓰지 않고도 사용할 수 있다. 
-{% endcomment %}
 
-{% for room in rooms %}
-<h1>{{room.name}} / ${{room.price}}</h1>
-{% endfor %}
+{% block page_name %}
+    Home
+{% endblock page_name %}
+
+{% block content %}
+    {% for room in rooms %}
+        <h1>{{room.name}} / ${{room.price}}</h1>
+    {% endfor %}
+{% endblock content %}
