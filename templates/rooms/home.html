@@ -9,11 +9,24 @@
         <h1>{{room.name}} / ${{room.price}}</h1>
     {% endfor %}
 
-    <h5> Page {{page}} of {{page_count}} </h5>
+    <h5> 
+    {% if page is not 1 %}
+        <a href="?page={{page|add:-1}}">Previous</a>
+    {% endif %}
 
+    Page {{page}} of {{page_count}} 
     
-    {% for page in page_range %}
-        <a href="?page={{page}}">{{page}}</a>
-    {% endfor %}
+    
+    {% if not page == page_count %}
+        <a href="?page={{page|add:1}}">Next</a>
+    {% endif %}
+        
+    </h5>
+    {% comment %} 
+        {{page}} 여기에다가 더 많은 로직을 쓰면 에러가 난다.
+        예를 들어 {{page - 1}}이렇게 쓰면 템플릿 문법 에러가 난다.
+        django가 이를 허용하지 않아서 인데
+        에러가 나지 않게 하기 위해서는 위의 방식처럼 쓰면 된다.
+    {% endcomment %}
         
 {% endblock content %}
