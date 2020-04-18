@@ -5,27 +5,27 @@
 {% endblock page_name %}
 
 {% block content %}
-    {% for room in rooms.object_list %}
+    {% for room in page.object_list %}
         <h1>{{room.name}} / ${{room.price}}</h1>
     {% endfor %}
 
     <h5> 
     {% comment %} 
         paginator에는 이전 페이지나 다음 페이지를 판별하는 메소드가 있다.
-        그게 rooms.has_previous, rooms.has_next이다.
+        그게 page.has_previous, page.has_next이다.
     {% endcomment %}
-    {% if rooms.has_previous %}
-        <a href="?page={{rooms.number|add:-1}}">Previous</a>
+    {% if page.has_previous %}
+        <a href="?page={{page.number|add:-1}}">Previous</a>
     {% endif %}
 
-    Page {{rooms.number}} of {{rooms.paginator.num_pages}} 
+    Page {{page.number}} of {{page.paginator.num_pages}} 
     
-    {% if rooms.has_next %}
-        <a href="?page={{rooms.number|add:1}}">Next</a>
+    {% if page.has_next %}
+        <a href="?page={{page.number|add:1}}">Next</a>
     {% endif %}
 
     {% comment %} 페이지들을 쫙 나열하고 싶을 때는 아래의 코드를 쓴다. {% endcomment %}
-    {% for page in rooms.paginator.page_range %}
+    {% for page in page.paginator.page_range %}
         <a href="?page={{page}}">{{page}}</a>
     {% endfor %}
         
