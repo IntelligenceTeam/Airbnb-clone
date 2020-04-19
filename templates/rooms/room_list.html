@@ -6,7 +6,11 @@
 
 {% block content %}
     {% for room in rooms %}
-        <h1>{{room.name}} / ${{room.price}}</h1>
+        <h3>
+            <a href="{% url "rooms:detail" room.pk %}">
+                {{room.name}} / ${{room.price}}
+            </a>
+        </h3>
     {% endfor %}
 
     <h5> 
@@ -26,7 +30,7 @@
 
     {% comment %} 페이지들을 쫙 나열하고 싶을 때는 아래의 코드를 쓴다. {% endcomment %}
     {% for page in page_obj.paginator.page_range %}
-        <a href="?page={{page_obj}}">{{page_obj}}</a>
+        <a href="?page={{page}}">{{page}}</a>
     {% endfor %}
         
     </h5>
