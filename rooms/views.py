@@ -32,9 +32,11 @@ def search(request):
     bedrooms = int(request.GET.get("bedrooms", 0))
     beds = int(request.GET.get("beds", 0))
     baths = int(request.GET.get("baths", 0))
-    s_amenities = request.GET.get("amenities")
-    s_facilities = request.GET.get("facilities")
-    print(s_amenities, s_facilities)
+    instant = request.GET.get("instant", False)
+    super_host = request.GET.get("super_host", False)
+    s_amenities = request.GET.getlist("amenities")
+    s_facilities = request.GET.getlist("facilities")
+    # get은 하나의 항목만 나타내지만 getlist는 선택한 항목들을 리스트로 나타낸다.
 
     room_types = models.RoomType.objects.all()
 
@@ -47,6 +49,10 @@ def search(request):
         "bedrooms": bedrooms,
         "beds": beds,
         "baths": baths,
+        "s_amenities": s_amenities,
+        "s_facilities": s_facilities,
+        "instant": instant,
+        "super_host": super_host,
     }
 
     amenities = models.Amenity.objects.all()
