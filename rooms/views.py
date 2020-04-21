@@ -32,8 +32,8 @@ def search(request):
     bedrooms = int(request.GET.get("bedrooms", 0))
     beds = int(request.GET.get("beds", 0))
     baths = int(request.GET.get("baths", 0))
-    instant = request.GET.get("instant", False)
-    super_host = request.GET.get("super_host", False)
+    instant = bool(request.GET.get("instant", False))
+    superhost = bool(request.GET.get("superhost", False))
     s_amenities = request.GET.getlist("amenities")
     s_facilities = request.GET.getlist("facilities")
     # get은 하나의 항목만 나타내지만 getlist는 선택한 항목들을 리스트로 나타낸다.
@@ -52,7 +52,7 @@ def search(request):
         "s_amenities": s_amenities,
         "s_facilities": s_facilities,
         "instant": instant,
-        "super_host": super_host,
+        "superhost": superhost,
     }
 
     amenities = models.Amenity.objects.all()
@@ -73,9 +73,36 @@ def search(request):
     filter_args["country"] = country
 
     if room_type != 0:
-        filter_args["room_type__pk"] = room_type  # 이 경우에는 pk로 필터링 한다는 것이다.
-    # field lookup에 있는 것 말고도 필터하려는 것이 foreignkey인 이 경우에는 해당 인스턴스 변수로도 필터가 되는 듯 하다.
-    # room_type은 pk를 가지고 있으므로 언더바(_)2개를 써서 pk로 필터링을 하는 것.
+        filter_args["room_type__pk"] = room_type
+
+    if price != 0:
+        filter_args["price__lte"] = price
+
+    if guests != 0:
+        filter_args["guests__gte"] = guests  # greater than equals
+
+    if bedrooms != 0:
+        filter_args["bedrooms__gte"] = bedrooms
+
+    if beds != 0:
+        filter_args["beds__gte"] = beds
+
+    if baths != 0:
+        filter_args["baths__gte"] = baths
+
+    if instant is True:
+        filter_args["instant_book"] = True
+
+    if superhost is True:
+        filter_args["host__superhost"]
+
+    if len(s_amenities) > 0:
+        for s_amenity in s_amenities:
+            filter_args["amenities__pk"] = int(s_amenity)
+
+    if len(s_facilities) > 0:
+        for s_facility in s_facilities:
+            filter_args["facilities__pk"] = int(s_facility)
 
     rooms = models.Room.objects.filter(**filter_args)
 
