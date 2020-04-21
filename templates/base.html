@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>{% block page_name %}{% endblock page_name %} Nbnb</title>
+    <title>{% block page_title %}{% endblock page_title %} | Nbnb</title>
 </head>
 
 <body>
@@ -17,8 +17,8 @@
 
 </html>
 {% comment %}
-    블록은 같은 형식의 파일안에 내용만 다르게 할 수 있도록 하는 기능을 갖고 있다.
-    include는 일부 html파일을 그대로 넣기 위할 때 쓰는 것이다.
-    여기서 content는 home.html안에서 쓴 content block 내용이 들어간다.
-    block은 뼈대가 되는 파일과 따로 분리해서 쓰는 파일에 모두 써야한다.
+블록은 같은 형식의 파일안에 내용만 다르게 할 수 있도록 하는 기능을 갖고 있다.
+include는 일부 html파일을 그대로 넣기 위할 때 쓰는 것이다.
+여기서 content는 home.html안에서 쓴 content block 내용이 들어간다.
+block은 뼈대가 되는 파일과 따로 분리해서 쓰는 파일에 모두 써야한다.
 {% endcomment %}
