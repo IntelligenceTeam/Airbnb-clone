@@ -9,7 +9,19 @@
 </head>
 
 <body>
-    {% include "partials/header.html" %}
+    <header>
+        {% include 'partials/nav.html' %}
+        {% block search-bar %}
+            <form method="get" action="{% url "rooms:search" %}">
+                <input name="city" placeholder="Search By City">
+            </form>
+        {% endblock search-bar %}
+        {% comment %} 
+            header태그 안에는 value가 전달되지 않음.  
+            value를 전달하려는 것은 검색한 city가 태그에 입력되어 있도록 하기 위해서다.
+            그래서 value가 전달되는 form태그는 search.html에 있다.
+        {% endcomment %}
+    </header>
     {% block content %}
     {% endblock content %}
     {% include "partials/footer.html" %}
