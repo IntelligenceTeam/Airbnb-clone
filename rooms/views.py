@@ -65,4 +65,18 @@ def search(request):
         "facilities": facilities,
     }
 
-    return render(request, "rooms/search.html", {**form, **choices})
+    filter_args = {}
+
+    if city != "Anywhere":
+        filter_args["city__startswith"] = city
+
+    filter_args["country"] = country
+
+    if room_type != 0:
+        filter_args["room_type__pk"] = room_type  # 이 경우에는 pk로 필터링 한다는 것이다.
+    # field lookup에 있는 것 말고도 필터하려는 것이 foreignkey인 이 경우에는 해당 인스턴스 변수로도 필터가 되는 듯 하다.
+    # room_type은 pk를 가지고 있으므로 언더바(_)2개를 써서 pk로 필터링을 하는 것.
+
+    rooms = models.Room.objects.filter(**filter_args)
+
+    return render(request, "rooms/search.html", {**form, **choices, "rooms": rooms})
