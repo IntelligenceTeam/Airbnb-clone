@@ -16,8 +16,12 @@ class SearchForm(forms.Form):
     instant_book = forms.BooleanField(required=False)
     superhost = forms.BooleanField(required=False)
     amenities = forms.ModelMultipleChoiceField(
-        queryset=models.Amenity.objects.all(), widget=forms.CheckboxSelectMultiple
+        required=False,
+        queryset=models.Amenity.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
     )  # ModelMultipleChoiceField는 체크박스를 여러개 체크할 수 있는 필드이다.
     facilities = forms.ModelChoiceField(
-        queryset=models.Facility.objects.all(), widget=forms.CheckboxSelectMultiple
+        required=False,
+        queryset=models.Facility.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
     )
