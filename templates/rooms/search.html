@@ -15,9 +15,10 @@ Search
 
     <form action="{% url "rooms:search" %}">
         {{form.as_p}} 
+        <button>Search</button>
     </form>
     {% comment %} as_p로 하면 paragraph처리를 해서 옆이 아니라 아래로 나란히 나열됨. {% endcomment %}
-    
+
     <h3> Results </h3>
 
 
