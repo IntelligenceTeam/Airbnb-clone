@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("", include("core.urls", namespace="core")),
     path("rooms/", include("rooms.urls", namespace="rooms")),
+    path("users/", include("users.urls", namespace="users")),
     path("admin/", admin.site.urls),
 ]
 # 아무것도 없는 url은 '/'을 의미함. app_name을 안쓰면 namespace은 app_name지정없이는 작동이 안된다는 메시지가 뜸.. app_name은 urls.py에 있음.
