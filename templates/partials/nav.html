@@ -1,4 +1,21 @@
 <a href="{% url "core:home" %}">Nbnb</a>
 <ul>
-    <li><a href="{% url "users:login" %}">Login</a></li>
+    
+    {% if user.is_authenticated %}
+        <li><a href="{% url "users:logout" %}">Log Out</a></li>
+    {% else %}
+        <li><a href="{% url "users:login" %}">Log In</a></li>
+    {% endif %}
+    
+    {% comment %} 
+        user는 어떻게 쓸 수 있는것인가?
+        render를 할 때 context에다 user를 쓰지도 않았는데?
+        Django는 Context Processor라는 것을 갖고 있다.
+        이건 함수인데 여기 template에 정보를 추가한다.
+        어디서든 template에 접근할 수 있다.
+        이걸 render하는 view의 context가 아니어도 가능하다.
+        이 경우에는 Context Processor가 있는데
+        Cookie를 가지고 와서 user를 찾고 그걸 template에 자동으로 넣는다.
+        자세한 건 장고 공식 문서 참고.
+    {% endcomment %}
 </ul>
