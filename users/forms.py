@@ -21,22 +21,14 @@ class LoginForm(forms.Form):
             self.add_error("email", forms.ValidationError("User does not exist"))
 
 
-class SignUpForm(forms.Form):
+class SignUpForm(forms.ModelForm):
+    class Meta:  # ModelForm을 쓰면 이렇게 Meta클래스로 작성.
+        model = models.User
+        fields = ("first_name", "last_name", "email")
 
-    first_name = forms.CharField(max_length=80)
-    last_name = forms.CharField(max_length=80)
-    email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
     password_cf = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
     # label없이 변수명을 바꿔서 해도 됨. 페이지에 변수명으로 나옴.
-
-    def clean_email(self):
-        email = self.cleaned_data.get("email")
-        try:
-            models.User.objects.get(email=email)
-            raise forms.ValidationError("User already exists with that email")
-        except models.User.DoesNotExist:
-            return email
 
     def clean_password_cf(
         self,
@@ -48,12 +40,10 @@ class SignUpForm(forms.Form):
         else:
             return password
 
-    def save(self):
-        first_name = self.cleaned_data.get("first_name")
-        last_name = self.cleaned_data.get("last_name")
+    def save(self, *args, **kwargs):
+        user = super().save(commit=False)  # commit=False :object(객체)는 생성되지만 db 저장은 안됨.
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")
-        user = models.User.objects.create_user(email, email, password)
-        user.first_name = first_name
-        user.last_name = last_name
+        user.username = email
+        user.set_password(password)  # 비밀번호를 암호화 해주는 메소드
         user.save()
