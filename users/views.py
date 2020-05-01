@@ -77,16 +77,16 @@ def github_callback(request):
         client_secret = os.environ.get("GH_SECRET")
         code = request.GET.get("code", None)
         if code is not None:
-            result = requests.post(
+            token_request = requests.post(
                 f"https://github.com/login/oauth/access_token?client_id={client_id}&client_secret={client_secret}&code={code}",
                 headers={"Accept": "application/json"},
             )
-            result_json = result.json()
-            error = result_json.get("error", None)
+            token_json = token_request.json()
+            error = token_json.get("error", None)
             if error is not None:  # 에러가 있을 경우
                 raise GithubException()
             else:
-                access_token = result_json.get("access_token")
+                access_token = token_json.get("access_token")
                 api_request = requests.get(
                     "https://api.github.com/user",
                     headers={
@@ -95,23 +95,32 @@ def github_callback(request):
                     },
                 )
                 profile_json = api_request.json()
+                print(profile_json)
                 username = profile_json.get("login", None)
                 if username is not None:
                     name = profile_json.get("name")
                     email = profile_json.get("email")
                     bio = profile_json.get("bio")
-                    user = models.User.objects.get(email=email)
-                    if user is not None:
-                        return redirect(reverse("users:login"))
-                    else:
+                    try:
+                        user = models.User.objects.get(email=email)
+                        if user.login_method != models.User.LOGIN_GITHUB:
+                            raise GithubException()  # 다른 걸로 로그인 돼있으면 에러
+                    except models.User.DoesNotExist:
                         user = models.User.objects.create(
-                            username=email, first_name=name, bio=bio, email=email
-                        )
-                        login(request, user)
-                        return redirect(reverse("core:home"))
+                            email=email,
+                            first_name=name,
+                            username=email,
+                            bio=bio,
+                            login_method=models.User.LOGIN_GITHUB,
+                        )  # 그냥 create, password를 신경쓰지 않기 때문..
+                        user.set_unusable_password()
+                        user.save()
+                    login(request, user)
+                    return redirect(reverse("core:home"))
                 else:  # username이 None일 경우
                     raise GithubException()
         else:  # code값이 None이면
             raise GithubException()
-    except Exception:
+    except GithubException:
+        # send error message
         return redirect(reverse("users:login"))
