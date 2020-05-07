@@ -10,19 +10,24 @@
     <title>{% block page_title %}{% endblock page_title %} | Nbnb</title>
 </head>
 
-<body>
-    <header>
+<body class="text-grey-800">
+    <header class="container max-w-full flex items-center justify-between px-6 h-20 border-b border-gray-400">
+        <div class="flex items-center">
+            <a href="{% url "core:home" %}" class="mr-6">
+                <img class="w-6" src="{% static 'img/logo.png' %}">
+            </a>
+            {% block search-bar %}
+            <form method="get" action="{% url "rooms:search" %}">
+                <input class="border px-2 py-1 rounded-sm" name="city" placeholder="Search By City">
+            </form>
+            {% endblock search-bar %}
+            {% comment %}
+            header태그 안에는 value가 전달되지 않음.
+            value를 전달하려는 것은 검색한 city가 태그에 입력되어 있도록 하기 위해서다.
+            그래서 value가 전달되는 form태그는 search.html에 있다.
+            {% endcomment %}
+        </div>
         {% include 'partials/nav.html' %}
-        {% block search-bar %}
-        <form method="get" action="{% url "rooms:search" %}">
-            <input name="city" placeholder="Search By City">
-        </form>
-        {% endblock search-bar %}
-        {% comment %}
-        header태그 안에는 value가 전달되지 않음.
-        value를 전달하려는 것은 검색한 city가 태그에 입력되어 있도록 하기 위해서다.
-        그래서 value가 전달되는 form태그는 search.html에 있다.
-        {% endcomment %}
     </header>
     {% block content %}
     {% endblock content %}
