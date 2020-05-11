@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from . import models
 
 
@@ -24,7 +23,7 @@ class LoginForm(forms.Form):
             self.add_error("email", forms.ValidationError("User does not exist"))
 
 
-class SignUpForm(UserCreationForm):
+class SignUpForm(forms.ModelForm):
     class Meta:  # ModelForm을 쓰면 이렇게 Meta클래스로 작성.
         model = models.User
         fields = ("first_name", "last_name", "email")
@@ -34,17 +33,36 @@ class SignUpForm(UserCreationForm):
             "email": forms.EmailInput(attrs={"placeholder": "Email Name"}),
         }
 
-    password1 = forms.CharField(
+    password = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "Password"})
     )
-    password2 = forms.CharField(
+    password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "Confirm Password"})
     )
 
-    def save(self, commit=True):
-        user = super(UserCreationForm, self).save(commit=False)
-        user.username = self.cleaned_data.get("email")
-        user.set_password(self.cleaned_data.get("password1"))  # 비밀번호를 암호화 해주는 메소드
-        if commit:
-            user.save()
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        try:
+            models.User.objects.get(email=email)
+            raise forms.ValidationError(
+                "This email is already taken", code="existing_user"
+            )
+        except models.User.DoesNotExist:
+            return email
+
+    def clean_password1(self):
+        password = self.cleaned_data.get("password")
+        password1 = self.cleaned_data.get("password1")
+        if password != password1:
+            raise forms.ValidationError("Password confirmation does not match")
+        else:
+            return password
+
+    def save(self, *args, **kwargs):
+        user = super().save(commit=False)
+        email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
+        user.username = email
+        user.set_password(password)  # 비밀번호를 암호화 해주는 메소드
+        user.save()
         return user
