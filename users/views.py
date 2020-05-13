@@ -202,3 +202,8 @@ class UserProfileView(DetailView):
 
     model = models.User
     context_object_name = "user_obj"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["hello"] = "Hello!"
+        return context
