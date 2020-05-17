@@ -18,7 +18,7 @@
         <div class="w-1/2">
             {% comment %} 이 부분이 방의 제목 부분 {% endcomment %}
             <div class="flex justify-between">
-                <div>
+                <div class="mb-5">
                     <h4 class="text-3xl font-medium mb-px">{{room.name}}</h4>
                     <span class="text-gray-700 font-light">{{room.city}}</span>
                 </div>
@@ -27,10 +27,49 @@
                     <span class="mt-3 text-gray-500">{{room.host.first_name}}</span>
                 </a>
             </div>
-            <div class="flex">
-                {{room.room_type}}
-                {{room.get_beds}}
-                {{room.bedrooms}}
+            <div class="flex border-section">
+                <span class="mr-5 font-light">{{room.room_type}}</span>
+                <span class="mr-5 font-light">{{room.beds}} bed{{room.beds|pluralize}}</span>
+                <span class="mr-5 font-light">{{room.bedrooms}} bedroom{{room.bedrooms|pluralize}}</span>
+                <span class="mr-5 font-light">{{room.baths}} bath{{room.baths|pluralize}}</span>
+                <span class="mr-5 font-light">{{room.guests}} guest{{room.guests|pluralize}}</span>
+                {% comment %} 
+                    장고에서는 pluralize 라는게 있는데 이게 뭐냐면
+
+                    beds가 1이면 bed라고 리턴해도
+                    0이나 2면 beds라고 리턴되는 경우를 막기 위해서 나온것이다.
+
+                    0이면 beds라 하는게 문법적으로 이상하기 때문( 0인데 복수형이면 안되니까)
+                {% endcomment %}
+            </div>
+            <p class="border-section">
+                {{room.description}}
+            </p>
+            <div class="border-section">
+                <h4 class="font-medium text-lg mb-5">Amenities</h4>
+                {% for a in room.amenities.all %}
+                    <li class="mb-2">{{a}}</li>
+                {% endfor %}
+            </div>
+            <div class="border-section">
+                <h4 class="font-medium text-lg mb-5">Facilities</h4>
+                {% for f in room.facilities.all %}
+                    <li class="mb-2">{{f}}</li>
+                {% endfor %}
+            </div>
+            <div class="border-section">
+                <h4 class="font-medium text-lg mb-5">House Rules</h4>
+                <ul>
+                {% for h in room.house_rules.all %}
+                    <li class="mb-2">{{h}}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="border-section">
+                <h4 class="font-medium text-2xl mb-5">Reviews</h4>
+                <div>
+                    {{room.total_rating}} {{room.reviews.count}} review{{room.reviews.count|pluralize}}
+                </div>
             </div>
         </div>
         <div class="w-1/3">
