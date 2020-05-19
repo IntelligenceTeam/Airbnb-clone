@@ -97,7 +97,9 @@
             </div>
         </div>
         <div class="w-1/3">
-        {% comment %} 이 부분은 예약버튼 부분인듯  {% endcomment %}
+            {% if room.host == user %}
+                <a href="{% url 'rooms:edit' room.pk %}" class="btn-link block">Edit Room</a>
+            {% endif %}
         </div>
     </div>
 
