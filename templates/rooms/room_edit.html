@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block page_title %}
-    Update Profile
+    Update Room
 {% endblock page_title %}
 
 {% block search-bar %}
@@ -14,7 +14,7 @@
         
         
         <div class="mt-5">
-            <a href="#" class="text-teal-500 font-medium">Edit Photos</a>
+            <a href="{% url 'rooms:photos' room.pk %}" class="text-teal-500 font-medium">Edit Photos</a>
         </div>
         
     </div>
