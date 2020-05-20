@@ -205,5 +205,10 @@ class CreateRoomView(user_mixins.LoggedInOnlyView, FormView):
         room = form.save()
         room.host = self.request.user
         room.save()
+        form.save_m2m()  # object를 db에 저장한 후에 사용 가능.
         messages.success(self.request, "Room Uploaded")
         return redirect(reverse("rooms:detail", kwargs={"pk": room.pk}))
+
+        # save_m2m()은 model을 database에 저장한 뒤에 사용가능 하다.
+        # 그리고 그 조건은 저장할 때 commit=False라고 명시가 되어야 한다.
+        # 이 부분에서는 CreateRoomForm에서의 save에서 commit=False라고 되어있다.
