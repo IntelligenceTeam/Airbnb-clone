@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.views.generic import ListView, DetailView, View, UpdateView
+from django.views.generic import ListView, DetailView, View, UpdateView, FormView
 from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
@@ -181,7 +181,14 @@ class EditPhotoView(user_mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateVie
         print(room_pk)
         return reverse("rooms:photos", kwargs={"pk": room_pk})
 
-    # UpdateView는 사진을 찾을 수 없다.
-    # url들에 pk가 없어서, room_pk, photo_pk라고 되어 있기 때문이다.
-    # UpdateView는 pk라는 값의 인자만 찾는다.
-    # 그걸 바꾸는 변수가 pk_url_kwarg이다.
+
+class AddPhotoView(user_mixins.LoggedInOnlyView, SuccessMessageMixin, FormView):
+
+    model = models.Photo
+    template_name = "rooms/photo_create.html"
+    fields = ("caption", "file")
+    form_class = forms.CreatePhotoForm
+
+    def form_valid(self, form):
+        pk = self.kwargs.get("pk")
+        form.save(pk)
