@@ -13,6 +13,9 @@ class BookedDay(core_models.TimeStampedModel):
         verbose_name = "Booked Day"
         verbose_name_plural = "Booked Days"
 
+    def __str__(self):
+        return str(self.day)
+
 
 class Reservation(core_models.TimeStampedModel):
 
@@ -56,26 +59,16 @@ class Reservation(core_models.TimeStampedModel):
     is_finished.boolean = True
 
     def save(self, *args, **kwargs):
-        #  4815 Foster Stream Suite 731 North Wyatt, SD 49976 - 2020-04-17을 눌렀을 때
-        if True:  # 이미 만들어진 거로 테스트하려면 True로 해야 됨
+        if self.pk is None:
             start = self.check_in
-            print(start)  # 2020-04-17
             end = self.check_out
-            print(end)  # 2020-04-26
             difference = end - start
-            print(difference)  # 9 days, 0:00:00
             existing_booked_day = BookedDay.objects.filter(
                 day__range=(start, end)
             ).exists()
-            print(existing_booked_day)  # False
             if not existing_booked_day:
                 super().save(*args, **kwargs)
-                print(difference.days + 1)  # 10
                 for i in range(difference.days + 1):
                     day = start + datetime.timedelta(days=i)
-                    print(day)
-                    # 2020-04-17 2020-04-18 2020-04-19 2020-04-20
-                    # 2020-04-21 2020-04-22 2020-04-23 2020-04-24 2020-04-25 2020-04-26
                     BookedDay.objects.create(day=day, reservation=self)
-
         return super().save(*args, **kwargs)
