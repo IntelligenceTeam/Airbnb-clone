@@ -73,4 +73,5 @@ class Reservation(core_models.TimeStampedModel):
                 for i in range(difference.days + 1):
                     day = start + datetime.timedelta(days=i)
                     BookedDay.objects.create(day=day, reservation=self)
+                return
         return super().save(*args, **kwargs)
