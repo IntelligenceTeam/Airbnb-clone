@@ -1,3 +1,7 @@
+{% load i18n %}
 <footer class="container mx-auto text-center py-20 border-t font-bold text-gray-500 flex flex-col">
-    © 2020 Airbnb-clone, All rights reserved.
+    <span>
+        {% trans "Please don't copy us"%}
+    </span>
+    <span>© 2020 Airbnb-clone, {% trans 'All rights reserved' %} .</span>
 </footer>
