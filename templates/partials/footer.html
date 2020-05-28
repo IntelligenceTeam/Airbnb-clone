@@ -1,7 +1,15 @@
 {% load i18n %}
 <footer class="container mx-auto text-center py-20 border-t font-bold text-gray-500 flex flex-col">
-    <span>
-        {% trans "Please don't copy us"%}
-    </span>
-    <span>© 2020 Airbnb-clone, {% trans 'All rights reserved' %} .</span>
+    <div class="flex flex-col">
+        <span>
+            {% trans "Please don't copy us"%}
+        </span>
+        <span>© 2020 Airbnb-clone, {% trans 'All rights reserved' %} .</span>
+    </div>
+    <div class="mt-10 flex">
+        <select class="w-1/5 py-0 h-10 text-base" id="js-lang">
+            <option value="en">English</option>
+            <option value="es">Spanish</option>
+        </select>
+    </div>
 </footer>
