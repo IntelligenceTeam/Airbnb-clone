@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-31 21:54+0900\n"
+"POT-Creation-Date: 2020-05-31 23:30+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,12 +29,44 @@ msgstr "Por favor no nos copies."
 msgid "All rights reserved"
 msgstr "Todos los derechos reservados"
 
+#: .\templates\partials\nav.html:7
+msgid "Stop hosting"
+msgstr "Cambiar a Invitado"
+
+#: .\templates\partials\nav.html:9
+msgid "Start hosting"
+msgstr "Cambiar a Host"
+
+#: .\templates\partials\nav.html:14
+msgid "Create Room"
+msgstr "Crear Habitación"
+
+#: .\templates\partials\nav.html:16
+msgid "Profile"
+msgstr "Perfil"
+
+#: .\templates\partials\nav.html:17
+msgid "Log Out"
+msgstr "Cerrar Sesión"
+
+#: .\templates\partials\nav.html:19
+msgid "Log In"
+msgstr "Iniciar Sesión"
+
+#: .\templates\partials\nav.html:20
+msgid "Sign Up"
+msgstr ""
+
+#: .\templates\rooms\room_detail.html:32
+msgid "Save to Favorites"
+msgstr ""
+
 #: .\templates\rooms\room_list.html:33
 #, python-format
 msgid "Page %(current_page)s of %(total_pages)s "
 msgstr "Página %(current_page)s de %(total_pages)s"
 
-#: .\users\mixins.py:22
+#: .\users\mixins.py:13
 msgid "Can't go there"
 msgstr "No puedes ir ahí"
 
