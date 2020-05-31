@@ -1,5 +1,7 @@
 import os
 import requests
+from django.utils import translation
+from django.conf import settings
 from django.http import HttpResponse
 from django.views import View
 from django.contrib.auth.views import PasswordChangeView
@@ -277,5 +279,15 @@ def switch_hosting(request):
 def switch_language(request):
     lang = request.GET.get("lang", None)
     if lang is not None:
-        pass
+        request.session[translation.LANGUAGE_SESSION_KEY] = lang
+        print(lang)
     return HttpResponse(status=200)
+
+    # lang = request.GET.get("lang", None)
+    # request.session[translation.LANGUAGE_SESSION_KEY] = lang
+    # translation.activate(lang)
+    # response = HttpResponse(status=200)
+    # response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang)
+    # return response
+    # django가 강의 버전 2.2.5가 아니어서 다시 재설치함.
+

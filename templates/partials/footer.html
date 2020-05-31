@@ -7,9 +7,10 @@
         <span>© 2020 Airbnb-clone, {% trans 'All rights reserved' %} .</span>
     </div>
     <div class="mt-10 flex">
+        {% get_current_language as LANGUAGE_CODE %}
         <select class="w-1/5 py-0 h-10 text-base" id="js-lang">
-            <option value="en">English</option>
-            <option value="es">Spanish</option>
+            <option value="en" {% if LANGUAGE_CODE == 'en' %} selected {% endif %}>English</option>
+            <option value="es" {% if LANGUAGE_CODE == 'es' %} selected {% endif %}>Spanish</option>
         </select>
     </div>
 </footer>
