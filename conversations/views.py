@@ -1,17 +1,25 @@
 from django.db.models import Q
-from django.shortcuts import render
+from django.http import Http404
+from django.shortcuts import redirect, reverse, render
+from django.views.generic import DetailView
 from users import models as user_models
-from . import models
+from . import models, forms
 
 
 def go_conversation(request, a_pk, b_pk):
     user_one = user_models.User.objects.get_or_none(pk=a_pk)
     user_two = user_models.User.objects.get_or_none(pk=b_pk)
     if user_one is not None and user_two is not None:
-        conversation = models.Conversation.objects.get(
-            Q(participants=user_one) & Q(participants=user_two)
-        )
-        print(conversation)
-        # part 1, get_or_none은 사용이 안된다. 인자가 하나만 있어야 한다.
-        # TypeError at /conversations/go/37/1
-        #  get_or_none() takes 1 positional argument but 2 were given
+        try:
+            conversation = models.Conversation.objects.get(
+                Q(participants=user_one) & Q(participants=user_two)
+            )
+        except models.Conversation.DoesNotExist:
+            conversation = models.Conversation.objects.create()
+            conversation.participants.add(user_one, user_two)
+        return redirect(reverse("conversations:detail", kwargs={"pk": conversation.pk}))
+
+
+class ConversationDetailView(DetailView):
+
+    pass
