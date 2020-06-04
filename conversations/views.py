@@ -21,5 +21,25 @@ def go_conversation(request, a_pk, b_pk):
 
 
 class ConversationDetailView(DetailView):
+    def get(self, *args, **kwargs):
+        pk = kwargs.get("pk")
+        conversation = models.Conversation.objects.get_or_none(pk=pk)
+        if not conversation:
+            raise Http404()
+        return render(
+            self.request,
+            "conversations/conversation_detail.html",
+            {"conversation": conversation},
+        )
 
-    pass
+    def post(self, *args, **kwargs):
+        message = self.request.POST.get("message", None)
+        pk = kwargs.get("pk")
+        conversation = models.Conversation.objects.get_or_none(pk=pk)
+        if not conversation:
+            raise Http404()
+        if message is not None:
+            models.Message.objects.create(
+                message=message, user=self.request.user, conversation=conversation,
+            )
+        return redirect(reverse("conversations:detail", kwargs={"pk": pk}))
