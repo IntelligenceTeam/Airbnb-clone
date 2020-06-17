@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load static i18n %}
 {% block page_title %}
 Home
 {% endblock page_title %}
@@ -9,7 +9,7 @@ Home
 <div class="container mx-auto pb-10">
 
     <div class="rounded-xl bg-gray-800 -mx-40 h-50vh mt-32 mb-24 bg-cover bg-center"
-        style="background-image:url(https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80)">
+        style="background-image:url({% static 'img/bg.jpeg' %});">
     </div>
 
     <div class="flex flex-wrap -mx-40 mb-10">
@@ -29,7 +29,8 @@ Home
         {% endif %}
 
         <span class="mx-3 font-medium text-lg">
-            {% blocktrans with current_page=page_obj.number total_pages=page_obj.paginator.num_pages %}Page {{current_page}} of {{total_pages}} {% endblocktrans %}
+            {% blocktrans with current_page=page_obj.number total_pages=page_obj.paginator.num_pages %}Page
+            {{current_page}} of {{total_pages}} {% endblocktrans %}
         </span>
 
         {% if page_obj.has_next %}
