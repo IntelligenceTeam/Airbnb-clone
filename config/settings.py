@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("DJANGO_SECRET", "C@NX29OxgjyylxTna$Nz")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get("DEBUG"))
 
 ALLOWED_HOSTS = [
     "airbnb-clone.eba-rja8a647.ap-northeast-2.elasticbeanstalk.com",
@@ -90,7 +92,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-if DEBUG is False:
+if DEBUG:
 
     DATABASES = {
         "default": {
@@ -169,3 +171,16 @@ LOGIN_URL = "/users/login"
 # Locale
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
+
+
+#Sentry
+
+if not DEBUG:
+    sentry_sdk.init(
+        dsn="https://e950de7b80404c34a5cff48ab1032614@o409256.ingest.sentry.io/5281359",
+        integrations=[DjangoIntegration()],
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )

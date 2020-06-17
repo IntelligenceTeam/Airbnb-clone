@@ -18,6 +18,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
+
 urlpatterns = [
     path("", include("core.urls", namespace="core")),
     path("rooms/", include("rooms.urls", namespace="rooms")),
@@ -27,6 +32,7 @@ urlpatterns = [
     path("lists/", include("lists.urls", namespace="lists")),
     path("conversations/", include("conversations.urls", namespace="conversations")),
     path("admin/", admin.site.urls),
+    path("sentry-debug/", trigger_error),
 ]
 # 아무것도 없는 url은 '/'을 의미함. app_name을 안쓰면 namespace은 app_name지정없이는 작동이 안된다는 메시지가 뜸.. app_name은 urls.py에 있음.
 
