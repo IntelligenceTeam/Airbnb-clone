@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
 
 # Application definition
 
-THIRD_PARTY_APPS = ["django_countries", "django_seed"]
+THIRD_PARTY_APPS = ["django_countries", "django_seed", "storages"]
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -173,14 +173,25 @@ LOGIN_URL = "/users/login"
 LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 
 
-#Sentry
+# Sentry
 
 if not DEBUG:
-    sentry_sdk.init(
-        dsn="https://e950de7b80404c34a5cff48ab1032614@o409256.ingest.sentry.io/5281359",
-        integrations=[DjangoIntegration()],
 
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = "airbnb-clone-peakend"
+    AWS_AUTO_CREATE_BUCKET = True
+    AWS_BUCKET_ACL = "public-read"
+
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+
+    sentry_sdk.init(
+        dsn=os.environ.get("SENTRY_URL"),
+        integrations=[DjangoIntegration()],
         # If you wish to associate users to errors (assuming you are using
         # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=True
+        send_default_pii=True,
     )
