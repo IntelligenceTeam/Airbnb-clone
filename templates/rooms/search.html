@@ -11,20 +11,21 @@ Search
 
 {% block content %}
 
-    <h2>Search!</h2>
+    <div class="container lg:w-1/4 mx-6">
 
-    <form action="{% url "rooms:search" %}">
-        {{form.as_p}} 
-        <button>Search</button>
-    </form>
-    {% comment %} as_p로 하면 paragraph처리를 해서 옆이 아니라 아래로 나란히 나열됨. {% endcomment %}
+        <form action="{% url "rooms:search" %}">
+            {{form.as_p}} 
+            <button>Search</button>
+        </form>
+        {% comment %} as_p로 하면 paragraph처리를 해서 옆이 아니라 아래로 나란히 나열됨. {% endcomment %}
 
-    <h3> Results </h3>
+        <h3> Results </h3>
+        {% for room in rooms %}
+            <h3>{{room.name}}</h3>
+        {% endfor %}
+        
+    </div>
 
-
-    {% for room in rooms %}
-        <h3>{{room.name}}</h3>
-    {% endfor %}
     
 
 {% endblock content %}
