@@ -7,8 +7,8 @@ verify_ssl = true
 flake8 = "*"
 black = "*"
 pylint = "*"
-awsebcli = "*"
 pipenv-to-requirements = "*"
+awsebcli = "*"
 
 [packages]
 requests = "*"
